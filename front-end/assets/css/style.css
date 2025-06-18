@@ -1,0 +1,359 @@
+/* General Styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0d1b2a;
+    color: white;
+}
+
+/* Profile Page Layout */
+.profile-container {
+    display: flex;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+    gap: 32px;
+}
+
+.profile-sidebar {
+    flex: 0 0 280px;
+    background: #1b263b;
+    border-radius: 12px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    position: sticky;
+    top: 32px;
+}
+
+.profile-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Avatar Styles */
+.profile-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.avatar-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fbbf24;
+}
+
+.change-avatar-btn {
+    background: none;
+    border: none;
+    color: #fbbf24;
+    font-size: 0.875rem;
+    margin-top: 12px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.change-avatar-btn:hover {
+    text-decoration: underline;
+}
+
+/* Navigation Styles */
+.profile-nav {
+    margin-bottom: auto;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    margin-bottom: 8px;
+}
+
+.nav-item a {
+    display: block;
+    padding: 12px 16px;
+    color: #e0e1dd;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.nav-item a:hover {
+    background: rgba(251, 191, 36, 0.1);
+}
+
+.nav-item.active a {
+    background: #fbbf24;
+    color: #1b263b;
+    font-weight: 600;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    margin-top: 32px;
+    border-top: 1px solid rgba(224, 225, 221, 0.1);
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.back-btn {
+    color: #e0e1dd;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    padding: 8px 0;
+}
+
+.back-btn:hover {
+    color: #fbbf24;
+}
+
+.logout-btn {
+    background: rgba(220, 38, 38, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: rgba(220, 38, 38, 0.2);
+}
+
+/* Profile Content Styles */
+.profile-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fbbf24;
+    margin: 0 0 16px;
+}
+
+.profile-section {
+    background: #1b263b;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fbbf24;
+    margin: 0 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+/* Form Styles */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #e0e1dd;
+    margin-bottom: 8px;
+}
+
+.input-style {
+    background: #0d1b2a;
+    border: 1px solid #415a77;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    color: white;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-style:focus {
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.save-btn {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1b263b;
+    background: #fbbf24;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.save-btn:hover {
+    background: #f59e0b;
+    box-shadow: 0 2px 8px rgba(251,191,36,0.15);
+}
+
+/* Toggle Options */
+.toggle-options {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.toggle-btn {
+    padding: 8px 16px;
+    background: #0d1b2a;
+    border: 1px solid #415a77;
+    color: #e0e1dd;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toggle-btn:first-child {
+    border-radius: 6px 0 0 6px;
+    border-right: none;
+}
+
+.toggle-btn:last-child {
+    border-radius: 0 6px 6px 0;
+}
+
+.toggle-btn.active {
+    background: #fbbf24;
+    color: #1b263b;
+    font-weight: 600;
+    border-color: #fbbf24;
+}
+
+/* Checkbox Styles */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: #e0e1dd;
+    cursor: pointer;
+}
+
+/* Stats Cards */
+.data-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: #0d1b2a;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #e0e1dd;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fbbf24;
+}
+
+/* Data Actions */
+.data-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.action-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #fbbf24;
+    color: #1b263b;
+    border: none;
+    cursor: pointer;
+}
+
+.action-btn.secondary {
+    background: transparent;
+    border: 1px solid rgba(220, 38, 38, 0.5);
+    color: #ef4444;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+        padding: 16px;
+    }
+    
+    .profile-sidebar {
+        flex: none;
+        width: 100%;
+        position: relative;
+        top: 0;
+    }
+    
+    .profile-avatar {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+    }
+    
+    .data-stats {
+        grid-template-columns: 1fr;
+    }
+}
