@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Energy - Dashboard</title>
+    <!-- Local GridStack CSS -->
+    <link href="../../node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link href="../../node_modules/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="../../node_modules/flatpickr/dist/themes/dark.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="../assets/images/logo.png" alt="Smart Energy Logo">
+                <h2>Smart Energy</h2>
+            </div>
+            <nav class="navigation">
+                <ul>
+                    <li class="active"><a href="#">All Graphs</a></li>
+                    <li><a href="#">Solar Panels</a></li>
+                    <li><a href="#">Hydrogen Production</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Energy dashboard</h1>
+                
+                <div class="time-controls">
+                    <div class="period-selector">
+                        <button class="period-btn">Today</button>
+                        <button class="period-btn active">Month</button>
+                        <button class="period-btn">Year</button>
+                    </div>
+                    
+                    <div class="date-display">Juni 2025</div>
+                </div>
+                
+                <div class="date-range-picker">
+                    <input type="text" id="date-range" value="17-5-2025 - 17-6-2025" readonly>
+                </div>
+            </header>
+
+            <!-- GridStack Container -->
+            <div class="grid-container">
+                <div class="grid-stack"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Using your locally installed packages -->
+    <script src="../../node_modules/chart.js/dist/chart.umd.js"></script>
+    <script src="../../node_modules/gridstack/dist/gridstack-all.js"></script>
+    <script src="../../node_modules/flatpickr/dist/flatpickr.js"></script>
+    <!-- Dashboard JS -->
+    <script src="../assets/js/dashboard/date-picker.js"></script>
+    <script src="../assets/js/dashboard/grid-layout.js"></script>
+</body>
+</html>
