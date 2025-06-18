@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Energy - User Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-sidebar">
+            <div class="profile-avatar">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="avatar-img">
+                <button class="change-avatar-btn">Change Picture</button>
+            </div>
+            <nav class="profile-nav">
+                <ul class="nav-list">
+                    <li class="nav-item active"><a href="#personal-info">Personal Information</a></li>
+                    <li class="nav-item"><a href="#security">Security</a></li>
+                    <li class="nav-item"><a href="#preferences">Preferences</a></li>
+                    <li class="nav-item"><a href="#energy-data">Energy Data</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="back-btn">Back to Dashboard</a>
+                <button class="logout-btn">Logout</button>
+            </div>
+        </div>
+        
+        <div class="profile-content">
+            <h1 class="profile-title">My Profile</h1>
+            
+            <section id="personal-info" class="profile-section">
+                <h2 class="section-title">Personal Information</h2>
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" name="username" class="input-style" value="JohnDoe">
+                    </div>
+                    <div class="form-group">
+                        <label for="fullname" class="form-label">Full Name</label>
+                        <input type="text" id="fullname" name="fullname" class="input-style" value="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="input-style" value="john.doe@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="input-style" value="+31 6 12345678">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="security" class="profile-section">
+                <h2 class="section-title">Security</h2>
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label for="current-password" class="form-label">Current Password</label>
+                        <input type="password" id="current-password" name="current-password" class="input-style">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password" class="form-label">New Password</label>
+                        <input type="password" id="new-password" name="new-password" class="input-style">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password" class="form-label">Confirm New Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" class="input-style">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Update Password</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="preferences" class="profile-section">
+                <h2 class="section-title">Preferences</h2>
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">Theme</label>
+                        <div class="toggle-options">
+                            <button class="toggle-btn active">Light</button>
+                            <button class="toggle-btn">Dark</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Notifications</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> Energy usage reports
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> Savings opportunities
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox"> Tips and recommendations
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Preferences</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="energy-data" class="profile-section">
+                <h2 class="section-title">Energy Data</h2>
+                <div class="data-stats">
+                    <div class="stat-card">
+                        <span class="stat-label">Total Energy Saved</span>
+                        <span class="stat-value">256 kWh</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">CO2 Reduced</span>
+                        <span class="stat-value">105 kg</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Money Saved</span>
+                        <span class="stat-value">€42.80</span>
+                    </div>
+                </div>
+                <div class="data-actions">
+                    <button class="action-btn">Download Data</button>
+                    <button class="action-btn secondary">Reset Data</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="../assets/js/profile.js"></script>
+</body>
+</html>
+
