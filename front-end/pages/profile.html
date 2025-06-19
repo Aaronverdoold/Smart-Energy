@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +25,6 @@
                 </ul>
             </nav>
             <div class="sidebar-footer">
-                <a href="#" class="back-btn">Back to Dashboard</a>
                 <button class="logout-btn">Logout</button>
             </div>
         </div>
@@ -37,46 +35,44 @@
             <section id="personal-info" class="profile-section">
                 <h2 class="section-title">Personal Information</h2>
                 <div class="profile-form">
-                    <div class="form-group">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" name="username" class="input-style" value="JohnDoe">
-                    </div>
-                    <div class="form-group">
-                        <label for="fullname" class="form-label">Full Name</label>
-                        <input type="text" id="fullname" name="fullname" class="input-style" value="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input type="email" id="email" name="email" class="input-style" value="john.doe@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="input-style" value="+31 6 12345678">
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="save-btn">Save Changes</button>
-                    </div>
+                    <!-- Changed the form to point to a new process_update.php file -->
+                    <form action="../../back-end/registreer/process_update.php" method="POST">
+                        <div class="form-group">
+                            <label for="naam" class="form-label">Username</label>
+                            <input type="text" id="naam" name="naam" class="input-style" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="input-style" value="">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="save-btn">Save Changes</button>
+                        </div>
+                    </form>
                 </div>
             </section>
             
             <section id="security" class="profile-section">
                 <h2 class="section-title">Security</h2>
                 <div class="profile-form">
-                    <div class="form-group">
-                        <label for="current-password" class="form-label">Current Password</label>
-                        <input type="password" id="current-password" name="current-password" class="input-style">
-                    </div>
-                    <div class="form-group">
-                        <label for="new-password" class="form-label">New Password</label>
-                        <input type="password" id="new-password" name="new-password" class="input-style">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirm-password" class="form-label">Confirm New Password</label>
-                        <input type="password" id="confirm-password" name="confirm-password" class="input-style">
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="save-btn">Update Password</button>
-                    </div>
+                    <!-- Password update form -->
+                    <form action="../../back-end/registreer/process_password.php" method="POST">
+                        <div class="form-group">
+                            <label for="current-password" class="form-label">Current Password</label>
+                            <input type="password" id="current-password" name="current_password" class="input-style">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password" class="form-label">New Password</label>
+                            <input type="password" id="new-password" name="wachtwoord" class="input-style">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password" class="form-label">Confirm New Password</label>
+                            <input type="password" id="confirm-password" name="confirm_password" class="input-style">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="save-btn">Update Password</button>
+                        </div>
+                    </form>
                 </div>
             </section>
             

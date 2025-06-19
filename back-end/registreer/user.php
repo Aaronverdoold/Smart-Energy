@@ -1,5 +1,4 @@
 <?php
-
 class User {
     private $user_id;
     public $name;
@@ -39,4 +38,29 @@ class User {
             die("Error: " . $e->getMessage());
         }
     }
+
+    public function updateUser($conn) {
+        try {
+            $sql = "UPDATE user SET naam = :naam, email = :email, wachtwoord = :wachtwoord 
+                    WHERE user_id = :user_id";
+
+            $stmt = $conn->prepare($sql);
+
+            $hashedPassword = password_hash($this->wachtwoord, PASSWORD_DEFAULT);
+
+            $stmt->bindParam(':naam', $this->name, PDO::PARAM_STR);
+            $stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindParam(':wachtwoord', $hashedPassword, PDO::PARAM_STR);
+            $stmt->bindParam(':user_id', $this->user_id, PDO::PARAM_INT);
+
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                throw new Exception("Failed to update user.");
+            }
+        } catch (Exception $e) {
+            die("Error: " . $e->getMessage());
+        }      
+    }
+
 }
