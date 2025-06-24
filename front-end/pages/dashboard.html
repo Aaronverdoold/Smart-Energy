@@ -13,48 +13,53 @@
     <link rel="stylesheet" href="../assets/css/dashboard.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">
-                <img src="../assets/images/logo.png" alt="Smart Energy Logo">
-                <h2>Smart Energy</h2>
-            </div>
-            <nav class="navigation">
-                <ul>
-                    <li class="active"><a href="#">All Graphs</a></li>
-                    <li><a href="#">Solar Panels</a></li>
-                    <li><a href="#">Hydrogen Production</a></li>
-                </ul>
-            </nav>
-        </aside>
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="../assets/images/logo.png" alt="Smart Energy Logo">
+            <h2>Smart Energy</h2>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li class="active"><a href="#">All Graphs</a></li>
+                <li><a href="#">Solar Panels</a></li>
+                <li><a href="#">Hydrogen Production</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="dashboard-header">
-                <h1>Energy dashboard</h1>
-                
-                <div class="time-controls">
-                    <div class="period-selector">
-                        <button class="period-btn">Today</button>
-                        <button class="period-btn active">Month</button>
-                        <button class="period-btn">Year</button>
-                    </div>
-                    
-                    <div class="date-display">Juni 2025</div>
-                </div>
-                
-                <div class="date-range-picker">
-                    <input type="text" id="date-range" value="17-5-2025 - 17-6-2025" readonly>
-                </div>
-            </header>
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="dashboard-header">
+            <h1>Energy dashboard</h1>
 
-            <!-- GridStack Container -->
-            <div class="grid-container">
-                <div class="grid-stack"></div>
+            <div class="time-controls">
+                <div class="period-selector">
+                    <button class="period-btn">Today</button>
+                    <button class="period-btn active">Month</button>
+                    <button class="period-btn">Year</button>
+                </div>
+                <div class="date-display">Juni 2025</div>
             </div>
-        </main>
-    </div>
+
+            <div class="date-range-picker">
+                <input type="text" id="date-range" value="17-5-2025 - 17-6-2025" readonly>
+            </div>
+
+            <!-- User Info Section -->
+            <div class="user-info">
+                <span class="user-name">Welcome, <span id="user-name">User</span></span>
+                <button id="logout-btn" class="logout-btn">Log Out</button>
+            </div>
+        </header>
+
+        <!-- GridStack Container -->
+        <div class="grid-container">
+            <div class="grid-stack"></div>
+        </div>
+    </main>
+</div>
 
     <!-- Using your locally installed packages -->
     <script src="../../node_modules/chart.js/dist/chart.umd.js"></script>
@@ -63,5 +68,6 @@
     <!-- Dashboard JS -->
     <script src="../assets/js/dashboard/date-picker.js"></script>
     <script src="../assets/js/dashboard/grid-layout.js"></script>
+    <script src="../assets/js/dashboard/auth.js"></script>
 </body>
 </html>

@@ -244,3 +244,32 @@ body {
     background: rgba(249, 182, 22, 0.2);
     border-color: rgba(249, 182, 22, 0.2);
 }
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+}
+
+.user-name {
+    font-weight: 500;
+}
+
+.logout-btn {
+    background: rgba(220, 38, 38, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: rgba(220, 38, 38, 0.2);
+}
