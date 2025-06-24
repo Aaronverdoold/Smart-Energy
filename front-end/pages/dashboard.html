@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../assets/css/dashboard.css">
 </head>
 <body>
+
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -44,19 +45,34 @@
                 <div class="date-range-picker">
                     <input type="text" id="date-range" value="17-5-2025 - 17-6-2025" readonly>
                 </div>
-            </header>
+                <div class="date-display">Juni 2025</div>
+            </div>
+
 
             <!-- Dashboard Grid Container -->
             <div class="dashboard-grid" id="dashboard-grid">
                 <div id="loading-indicator">Loading dashboard data...</div>
             </div>
-        </main>
-    </div>
+
+            <!-- User Info Section -->
+            <div class="user-info">
+                <span class="user-name">Welcome, <span id="user-name">User</span></span>
+                <button id="logout-btn" class="logout-btn">Log Out</button>
+            </div>
+        </header>
+
+        <!-- GridStack Container -->
+        <div class="grid-container">
+            <div class="grid-stack"></div>
+        </div>
+    </main>
+</div>
 
     <!-- Load JS libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
     <script src="../assets/js/dashboard/date-picker.js"></script>
     <script src="../assets/js/dashboard/grid-layout.js"></script>
+    <script src="../assets/js/dashboard/auth.js"></script>
 </body>
 </html>
