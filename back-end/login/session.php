@@ -20,4 +20,10 @@ function getCurrentUsername() {
 function logoutSession() {
     SessionManager::logout();
 }
+
+/** Controleer of de sessie na 10 min is verlopen en log de gebruiker uit bij timeout. */
+function checkSessionTimeout($timeout = 600) {
+    SessionManager::checkTimeout($timeout);
+}
+
 ?>

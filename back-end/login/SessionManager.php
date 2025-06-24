@@ -43,5 +43,18 @@ class SessionManager {
         self::start();
         return isset($_SESSION['naam']) ? $_SESSION['naam'] : null;
     }
+
+    /**
+     * Controleer of de sessie is verlopen na 10 min en log de gebruiker uit bij timeout.
+     */
+    public static function checkTimeout($timeout = 600) {
+        self::start();
+        if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $timeout)) {
+            self::logout();
+            header('Location: ../../front-end/pages/login.html');
+            exit();
+        }
+        $_SESSION['LAST_ACTIVITY'] = time();
+    }
 }
 ?>
