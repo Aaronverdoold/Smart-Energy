@@ -31,10 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Controleer of het wachtwoord klopt
-//        if (!password_verify($wachtwoord, $user["wachtwoord"])) {
-//            echo json_encode(['success' => false, 'message' => 'Onjuist wachtwoord.']);
-//            exit();
-//        }
+        if (!password_verify($wachtwoord, $user["wachtwoord"])) {
+            echo json_encode(['success' => false, 'message' => 'Onjuist wachtwoord.']);
+            exit();
+        }
 
         // Sla gebruikersgegevens op in de sessie
         logSession($user["naam"], $user["email"]);
