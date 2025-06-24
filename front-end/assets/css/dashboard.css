@@ -31,15 +31,15 @@ body {
     overflow: hidden;
 }
 
-/* Sidebar Styles */
 .sidebar {
-    width: 200px;
+    width: 240px;
+    flex-shrink: 0;
+    z-index: 10;
     background-color: var(--sidebar-bg);
     padding: 20px 0;
     display: flex;
     flex-direction: column;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 10;
 }
 
 .logo {
@@ -94,8 +94,9 @@ body {
 /* Main Content */
 .main-content {
     flex: 1;
-    padding: 0;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     position: relative;
     background-color: var(--main-bg);
     background-image:
@@ -355,6 +356,8 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding: 20px;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .widget {
@@ -362,6 +365,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    height: auto;
+    min-height: 300px;
 }
 
 .widget-header {
@@ -396,6 +401,16 @@ body {
 }
 
 @media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+    
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
