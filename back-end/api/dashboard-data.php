@@ -10,7 +10,16 @@ require_once '../config/db.php';
 try {
     $db = getDbConnection();
     
-    // Modified to fetch ALL records by removing LIMIT clause
+    // Handle date filtering
+    $dateFilter = "";
+    if (isset($_GET['start']) && isset($_GET['end'])) {
+        $start = $_GET['start'];
+        $end = $_GET['end'];
+        // Add 23:59:59 to end date to include the entire day
+        $dateFilter = "WHERE s.tijdstip BETWEEN '$start 00:00:00' AND '$end 23:59:59'";
+    }
+    
+    // Get sensor data with relationships
     $stmt = $db->query("SELECT s.tijdstip, a.waterstofopslag_auto, o.buitentemperatuur, 
                       o.binnentemperatuur, o.waterstofproductie, w.zonnepaneelspanning, 
                       w.zonnepaneelstroom  
@@ -18,6 +27,7 @@ try {
                       JOIN autoenergiedata a ON s.sensor_data_id = a.sensor_data_id
                       JOIN omgevingsenergiedata o ON s.sensor_data_id = o.sensor_data_id
                       JOIN woningenergiedata w ON s.sensor_data_id = w.sensor_data_id
+                      $dateFilter
                       ORDER BY s.tijdstip ASC");
     
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,9 +42,15 @@ try {
     $carHydrogen = [];
     
     foreach ($data as $row) {
-        // Format timestamp to be more readable (day + time)
+        // Format timestamp based on date range length
         $timestamp = strtotime($row['tijdstip']);
-        $labels[] = date('d/m H:i', $timestamp);
+        
+        // Choose format based on data quantity
+        if (count($data) > 100) {
+            $labels[] = date('d/m', $timestamp); // Just day/month for large datasets
+        } else {
+            $labels[] = date('d/m H:i', $timestamp); // Day/month and time for smaller datasets
+        }
         
         // Solar panel data
         $voltage = (float)$row['zonnepaneelspanning'];

@@ -2,15 +2,49 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadDashboardData();
     setupNavigation();
+    
+    // Expose refreshChartData function globally for date picker to use
+    window.refreshChartData = function(start, end) {
+        // Format dates as YYYY-MM-DD for the API
+        const startFormatted = formatDateForAPI(start);
+        const endFormatted = formatDateForAPI(end);
+        
+        // Show loading indicator
+        document.getElementById('dashboard-grid').innerHTML = '<div id="loading-indicator">Loading dashboard data...</div>';
+        
+        // Reload data with date filter
+        loadDashboardData(startFormatted, endFormatted);
+    };
 });
 
+// Format date for API
+function formatDateForAPI(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 // Fetch data from API
-function loadDashboardData() {
-    fetch('../../back-end/api/dashboard-data.php')
+function loadDashboardData(startDate = null, endDate = null) {
+    // Build API URL with optional date parameters
+    let apiUrl = '../../back-end/api/dashboard-data.php';
+    if (startDate && endDate) {
+        apiUrl += `?start=${startDate}&end=${endDate}`;
+    }
+    
+    fetch(apiUrl)
         .then(response => response.json())
         .then(result => {
             if (result.status !== 'success') {
                 throw new Error(result.message || 'API error');
+            }
+            
+            // Check if we have data
+            if (result.data.labels.length === 0) {
+                document.getElementById('dashboard-grid').innerHTML = 
+                    '<div class="error-message">No data available for the selected date range</div>';
+                return;
             }
             
             // Clear loading indicator
@@ -115,7 +149,7 @@ function createWidgets(data) {
         
         grid.appendChild(widgetEl);
         
-        // Create chart
+        // Create chart with better options for date filtering
         const canvas = document.getElementById(widget.id);
         new Chart(canvas, {
             type: 'line',
@@ -124,9 +158,6 @@ function createWidgets(data) {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        position: 'top'
-                    },
                     tooltip: {
                         mode: 'index',
                         intersect: false
@@ -135,7 +166,6 @@ function createWidgets(data) {
                 scales: {
                     x: {
                         ticks: {
-                            // Show fewer labels on the x-axis for readability
                             maxTicksLimit: 10,
                             maxRotation: 45,
                             minRotation: 45
