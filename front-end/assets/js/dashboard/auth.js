@@ -32,6 +32,10 @@ class DashboardAuth {
     }
 }
 
+document.getElementById('profile-btn').addEventListener('click', function() {
+    window.location.href = '../pages/profile.html';
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     new DashboardAuth('user-name', 'logout-btn');
 });
