@@ -19,10 +19,12 @@ try {
         $dateFilter = "WHERE s.tijdstip BETWEEN '$start 00:00:00' AND '$end 23:59:59'";
     }
     
-    // Get sensor data with relationships
-    $stmt = $db->query("SELECT s.tijdstip, a.waterstofopslag_auto, o.buitentemperatuur, 
-                      o.binnentemperatuur, o.waterstofproductie, w.zonnepaneelspanning, 
-                      w.zonnepaneelstroom  
+    // Get ALL sensor data with relationships
+    $stmt = $db->query("SELECT s.tijdstip, 
+                      a.waterverbruik_auto, a.waterstofopslag_auto,
+                      o.buitentemperatuur, o.binnentemperatuur, o.luchtdruk, 
+                      o.luchtvochtigheid, o.co2_concentratie_binnen, o.accu_level, o.waterstofproductie,
+                      w.zonnepaneelspanning, w.zonnepaneelstroom, w.stroomverbruik_woning, w.waterstofopslag_woning  
                       FROM sensordata s
                       JOIN autoenergiedata a ON s.sensor_data_id = a.sensor_data_id
                       JOIN omgevingsenergiedata o ON s.sensor_data_id = o.sensor_data_id
@@ -35,36 +37,48 @@ try {
     // Format data for charts
     $labels = [];
     $solarVoltage = [];
+    $solarCurrent = [];
     $solarPower = [];
     $hydrogenProduction = [];
+    $carHydrogenUsage = [];
     $tempOutside = [];
     $tempInside = [];
+    $pressure = [];
+    $humidity = [];
+    $co2Level = [];
+    $batteryLevel = [];
+    $homePower = [];
+    $homeHydrogen = [];
     $carHydrogen = [];
     
     foreach ($data as $row) {
-        // Format timestamp based on date range length
+        // Format timestamp based on data quantity
         $timestamp = strtotime($row['tijdstip']);
-        
-        // Choose format based on data quantity
-        if (count($data) > 100) {
-            $labels[] = date('d/m', $timestamp); // Just day/month for large datasets
-        } else {
-            $labels[] = date('d/m H:i', $timestamp); // Day/month and time for smaller datasets
-        }
+        $labels[] = date('d/m H:i', $timestamp);
         
         // Solar panel data
         $voltage = (float)$row['zonnepaneelspanning'];
         $current = (float)$row['zonnepaneelstroom'];
         $solarVoltage[] = $voltage;
+        $solarCurrent[] = $current;
         $solarPower[] = round($voltage * $current, 2);
         
-        // Hydrogen & temperature data
+        // Home energy data
+        $homePower[] = (float)$row['stroomverbruik_woning'];
+        $homeHydrogen[] = (float)$row['waterstofopslag_woning'];
+        
+        // Car data
+        $carHydrogenUsage[] = (float)$row['waterverbruik_auto'];
+        $carHydrogen[] = (float)$row['waterstofopslag_auto'];
+        
+        // Environment data
         $hydrogenProduction[] = (float)$row['waterstofproductie'];
         $tempOutside[] = (float)$row['buitentemperatuur'];
         $tempInside[] = (float)$row['binnentemperatuur'];
-        
-        // Car hydrogen level
-        $carHydrogen[] = (float)$row['waterstofopslag_auto'];
+        $pressure[] = (float)$row['luchtdruk'];
+        $humidity[] = (float)$row['luchtvochtigheid'];
+        $co2Level[] = (float)$row['co2_concentratie_binnen'];
+        $batteryLevel[] = (float)$row['accu_level'];
     }
     
     echo json_encode([
@@ -73,6 +87,7 @@ try {
             'labels' => $labels,
             'solar' => [
                 'voltage' => $solarVoltage,
+                'current' => $solarCurrent,
                 'power' => $solarPower
             ],
             'hydrogen' => [
@@ -83,7 +98,18 @@ try {
                 'inside' => $tempInside
             ],
             'car' => [
-                'hydrogen' => $carHydrogen
+                'hydrogen' => $carHydrogen,
+                'usage' => $carHydrogenUsage
+            ],
+            'home' => [
+                'power' => $homePower,
+                'hydrogen' => $homeHydrogen
+            ],
+            'environment' => [
+                'pressure' => $pressure,
+                'humidity' => $humidity,
+                'co2' => $co2Level,
+                'battery' => $batteryLevel
             ]
         ]
     ]);

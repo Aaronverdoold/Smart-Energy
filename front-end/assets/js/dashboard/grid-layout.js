@@ -85,7 +85,7 @@ function createWidgets(data) {
             chartData: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Production (%)',
+                    label: 'Production (L/h)',
                     data: data.hydrogen.production,
                     borderColor: '#4CAF50',
                     backgroundColor: 'rgba(76, 175, 80, 0.1)',
@@ -129,6 +129,115 @@ function createWidgets(data) {
                     fill: true
                 }]
             }
+        },
+        // NEW WIDGETS BELOW
+        {
+            id: 'home-power-chart',
+            type: 'home-power',
+            title: 'Home Electricity Consumption',
+            chartData: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Power (kW)',
+                    data: data.home.power,
+                    borderColor: '#FF9800',
+                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                    fill: true
+                }]
+            }
+        },
+        {
+            id: 'home-hydrogen-chart',
+            type: 'home-hydrogen',
+            title: 'Home Hydrogen Storage',
+            chartData: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Storage (%)',
+                    data: data.home.hydrogen,
+                    borderColor: '#009688',
+                    backgroundColor: 'rgba(0, 150, 136, 0.1)',
+                    fill: true
+                }]
+            }
+        },
+        {
+            id: 'environment-chart',
+            type: 'environment',
+            title: 'Air Quality',
+            chartData: {
+                labels: data.labels,
+                datasets: [
+                    {
+                        label: 'CO₂ (ppm)',
+                        data: data.environment.co2,
+                        borderColor: '#795548',
+                        backgroundColor: 'rgba(121, 85, 72, 0.1)',
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: data.environment.humidity,
+                        borderColor: '#03A9F4',
+                        backgroundColor: 'rgba(3, 169, 244, 0.1)',
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'CO₂ (ppm)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Humidity (%)'
+                        }
+                    }
+                }
+            }
+        },
+        {
+            id: 'battery-chart',
+            type: 'battery',
+            title: 'Battery Level',
+            chartData: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Level (%)',
+                    data: data.environment.battery,
+                    borderColor: '#8BC34A',
+                    backgroundColor: 'rgba(139, 195, 74, 0.1)',
+                    fill: true
+                }]
+            }
+        },
+        {
+            id: 'pressure-chart',
+            type: 'pressure',
+            title: 'Atmospheric Pressure',
+            chartData: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Pressure (hPa)',
+                    data: data.environment.pressure,
+                    borderColor: '#607D8B',
+                    backgroundColor: 'rgba(96, 125, 139, 0.1)'
+                }]
+            }
         }
     ];
 
@@ -170,8 +279,10 @@ function createWidgets(data) {
                             maxRotation: 45,
                             minRotation: 45
                         }
-                    }
-                }
+                    },
+                    ...(widget.options?.scales || {})
+                },
+                ...(widget.options || {})
             }
         });
     });

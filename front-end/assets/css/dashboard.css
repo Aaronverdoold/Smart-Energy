@@ -198,23 +198,19 @@ body {
 /* Chart styling */
 .chart-container {
     position: relative;
-    height: calc(100% - 42px);
+    height: 280px !important; /* Fixed height with !important to override Chart.js */
+    max-height: 280px;
     padding: 8px;
     width: 100%;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    overflow: hidden; /* Prevent content from expanding beyond */
 }
 
-.chart-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    position: relative;
-    height: 100%;
-    width: 100%;
+.chart-container canvas {
+    max-height: 100% !important;
+    height: 100% !important;
 }
 
 .loading-indicator {
@@ -296,7 +292,7 @@ body {
     color: #2e7d32;
 }
 
-.data-source.error {
+.data.source.error {
     background-color: #ffebee;
     color: #c62828;
 }
@@ -353,11 +349,9 @@ body {
 /* Dashboard Grid */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
     gap: 20px;
     padding: 20px;
-    overflow-y: auto;
-    flex: 1;
 }
 
 .widget {
@@ -365,81 +359,20 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    height: auto;
-    min-height: 300px;
+    height: 350px; /* Fixed height instead of auto */
+    min-height: 350px;
 }
 
-.widget-header {
-    padding: 12px;
-    font-weight: bold;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-.chart-container {
-    height: 300px;
-    padding: 8px;
-    position: relative;
-}
-
-#loading-indicator {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px;
-    font-size: 16px;
-    color: var(--text-light);
-}
-
-.error-message {
-    grid-column: 1 / -1;
-    background-color: rgba(244, 67, 54, 0.1);
-    color: #f44336;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    border-left: 4px solid #f44336;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    position: absolute;
-    top: 1.5rem;
-    right: 2rem;
-}
-
-.profile-btn {
-    background: rgba(37, 99, 235, 0.1); /* blue-500 */
-    color: #2563eb;
-    border: 1px solid rgba(37, 99, 235, 0.3);
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.profile-btn:hover {
-    background: rgba(37, 99, 235, 0.2);
-}
-
-.logout-btn {
-    background: rgba(220, 38, 38, 0.1);
-    color: #ef4444;
-    border: 1px solid rgba(220, 38, 38, 0.3);
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.logout-btn:hover {
-    background: rgba(220, 38, 38, 0.2);
-}
+/* Add color coding for different widget types */
+.widget[data-type="solar"] { border-left: 4px solid #FFC107; }
+.widget[data-type="hydrogen"] { border-left: 4px solid #4CAF50; }
+.widget[data-type="temperature"] { border-left: 4px solid #F44336; }
+.widget[data-type="car"] { border-left: 4px solid #9C27B0; }
+.widget[data-type="home-power"] { border-left: 4px solid #FF9800; }
+.widget[data-type="home-hydrogen"] { border-left: 4px solid #009688; }
+.widget[data-type="environment"] { border-left: 4px solid #795548; }
+.widget[data-type="battery"] { border-left: 4px solid #8BC34A; }
+.widget[data-type="pressure"] { border-left: 4px solid #607D8B; }
 
 @media (max-width: 768px) {
     .app-container {
