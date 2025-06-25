@@ -51,7 +51,7 @@ class SessionManager {
         self::start();
         if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $timeout)) {
             self::logout();
-            header('Location: ../../front-end/pages/login.html');
+            header('Location: ../../front-end/pages/login-form.html');
             exit();
         }
         $_SESSION['LAST_ACTIVITY'] = time();
