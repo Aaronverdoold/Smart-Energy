@@ -1,5 +1,36 @@
+// Update GridStack initialization to better handle scrolling
+
 // Dashboard initialization
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("Grid layout initializing...");
+    
+    // Initialize GridStack only once
+    const grid = GridStack.init({
+        column: 12,
+        cellHeight: 80,
+        margin: 10,
+        resizable: true,
+        draggable: {
+            handle: '.widget-header', // Only allow dragging from the header
+            scroll: true, // Enable scrolling while dragging
+            appendTo: 'body', // Append drag helper to body for better performance
+            containment: '.grid-stack' // Contain dragging within grid
+        },
+        animate: true,
+        float: true,
+        alwaysShowResizeHandle: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    });
+    
+    // Store grid globally for other functions to use
+    window.dashboardGrid = grid;
+    
+    // Add grid event listeners
+    grid.on('added removed change', function(e, items) {
+        console.log('Grid layout changed', e, items);
+        saveGridLayout();
+    });
+    
+    // Load dashboard data
     loadDashboardData();
     setupNavigation();
     
@@ -9,13 +40,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const startFormatted = formatDateForAPI(start);
         const endFormatted = formatDateForAPI(end);
         
+        console.log(`Refreshing chart data for ${startFormatted} to ${endFormatted}`);
+        
         // Show loading indicator
         document.getElementById('dashboard-grid').innerHTML = '<div id="loading-indicator">Loading dashboard data...</div>';
         
         // Reload data with date filter
         loadDashboardData(startFormatted, endFormatted);
     };
+    
+    // Try to load saved layout if available
+    const savedLayout = localStorage.getItem('dashboardLayout');
+    if (savedLayout) {
+        try {
+            console.log("Attempting to restore saved layout");
+            grid.load(JSON.parse(savedLayout));
+        } catch (e) {
+            console.error('Could not load saved layout', e);
+        }
+    }
 });
+
+// Function to save the current layout
+function saveGridLayout() {
+    if (!window.dashboardGrid) return;
+    
+    const serializedData = window.dashboardGrid.save();
+    localStorage.setItem('dashboardLayout', JSON.stringify(serializedData));
+    console.log("Layout saved to localStorage", serializedData);
+}
 
 // Format date for API
 function formatDateForAPI(date) {
@@ -27,6 +80,8 @@ function formatDateForAPI(date) {
 
 // Fetch data from API
 function loadDashboardData(startDate = null, endDate = null) {
+    console.log("Loading dashboard data...", { startDate, endDate });
+    
     // Build API URL with optional date parameters
     let apiUrl = '../../back-end/api/dashboard-data.php';
     if (startDate && endDate) {
@@ -34,24 +89,26 @@ function loadDashboardData(startDate = null, endDate = null) {
     }
     
     fetch(apiUrl)
-        .then(response => response.json())
+        .then(response => {
+            console.log("API response received");
+            return response.json();
+        })
         .then(result => {
+            console.log("API data processed", result);
+            
             if (result.status !== 'success') {
                 throw new Error(result.message || 'API error');
             }
             
             // Check if we have data
-            if (result.data.labels.length === 0) {
+            if (!result.data || result.data.labels.length === 0) {
                 document.getElementById('dashboard-grid').innerHTML = 
                     '<div class="error-message">No data available for the selected date range</div>';
                 return;
             }
             
-            // Clear loading indicator
-            document.getElementById('dashboard-grid').innerHTML = '';
-            
-            const data = result.data;
-            createWidgets(data);
+            // Create widgets with data
+            createWidgets(result.data);
         })
         .catch(error => {
             console.error('Failed to load dashboard data:', error);
@@ -62,12 +119,20 @@ function loadDashboardData(startDate = null, endDate = null) {
 
 // Create dashboard widgets
 function createWidgets(data) {
+    console.log("Creating dashboard widgets");
+    
+    // Clear the grid first
+    if (window.dashboardGrid) {
+        window.dashboardGrid.removeAll();
+    }
+    
     // Define widgets
     const widgets = [
         {
             id: 'solar-chart',
             type: 'solar',
             title: 'Solar Panel Output',
+            x: 0, y: 0, w: 6, h: 4,
             chartData: {
                 labels: data.labels,
                 datasets: [{
@@ -82,6 +147,7 @@ function createWidgets(data) {
             id: 'hydrogen-chart',
             type: 'hydrogen',
             title: 'Hydrogen Production',
+            x: 6, y: 0, w: 6, h: 4,
             chartData: {
                 labels: data.labels,
                 datasets: [{
@@ -97,6 +163,7 @@ function createWidgets(data) {
             id: 'temperature-chart',
             type: 'temperature',
             title: 'Temperature',
+            x: 0, y: 4, w: 6, h: 4,
             chartData: {
                 labels: data.labels,
                 datasets: [
@@ -119,6 +186,7 @@ function createWidgets(data) {
             id: 'car-chart',
             type: 'car',
             title: 'Car Hydrogen Level',
+            x: 6, y: 4, w: 6, h: 4,
             chartData: {
                 labels: data.labels,
                 datasets: [{
@@ -130,11 +198,11 @@ function createWidgets(data) {
                 }]
             }
         },
-        // NEW WIDGETS BELOW
         {
             id: 'home-power-chart',
             type: 'home-power',
             title: 'Home Electricity Consumption',
+            x: 0, y: 8, w: 6, h: 4,
             chartData: {
                 labels: data.labels,
                 datasets: [{
@@ -150,6 +218,7 @@ function createWidgets(data) {
             id: 'home-hydrogen-chart',
             type: 'home-hydrogen',
             title: 'Home Hydrogen Storage',
+            x: 6, y: 8, w: 6, h: 4,
             chartData: {
                 labels: data.labels,
                 datasets: [{
@@ -160,131 +229,63 @@ function createWidgets(data) {
                     fill: true
                 }]
             }
-        },
-        {
-            id: 'environment-chart',
-            type: 'environment',
-            title: 'Air Quality',
-            chartData: {
-                labels: data.labels,
-                datasets: [
-                    {
-                        label: 'CO₂ (ppm)',
-                        data: data.environment.co2,
-                        borderColor: '#795548',
-                        backgroundColor: 'rgba(121, 85, 72, 0.1)',
-                        yAxisID: 'y'
-                    },
-                    {
-                        label: 'Humidity (%)',
-                        data: data.environment.humidity,
-                        borderColor: '#03A9F4',
-                        backgroundColor: 'rgba(3, 169, 244, 0.1)',
-                        yAxisID: 'y1'
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                        title: {
-                            display: true,
-                            text: 'CO₂ (ppm)'
-                        }
-                    },
-                    y1: {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        grid: {
-                            drawOnChartArea: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Humidity (%)'
-                        }
-                    }
-                }
-            }
-        },
-        {
-            id: 'battery-chart',
-            type: 'battery',
-            title: 'Battery Level',
-            chartData: {
-                labels: data.labels,
-                datasets: [{
-                    label: 'Level (%)',
-                    data: data.environment.battery,
-                    borderColor: '#8BC34A',
-                    backgroundColor: 'rgba(139, 195, 74, 0.1)',
-                    fill: true
-                }]
-            }
-        },
-        {
-            id: 'pressure-chart',
-            type: 'pressure',
-            title: 'Atmospheric Pressure',
-            chartData: {
-                labels: data.labels,
-                datasets: [{
-                    label: 'Pressure (hPa)',
-                    data: data.environment.pressure,
-                    borderColor: '#607D8B',
-                    backgroundColor: 'rgba(96, 125, 139, 0.1)'
-                }]
-            }
         }
     ];
 
     // Add widgets to dashboard
-    const grid = document.getElementById('dashboard-grid');
-    
     widgets.forEach(widget => {
-        const widgetEl = document.createElement('div');
-        widgetEl.className = 'widget';
-        widgetEl.setAttribute('data-type', widget.type);
-        
-        widgetEl.innerHTML = `
-            <div class="widget-header">${widget.title}</div>
-            <div class="chart-container">
-                <canvas id="${widget.id}"></canvas>
+        const widgetContent = `
+            <div class="widget" data-type="${widget.type}">
+                <div class="widget-header">${widget.title}</div>
+                <div class="chart-container">
+                    <canvas id="${widget.id}"></canvas>
+                </div>
             </div>
         `;
         
-        grid.appendChild(widgetEl);
+        // Add the widget to GridStack
+        if (window.dashboardGrid) {
+            console.log(`Adding widget: ${widget.id}`);
+            window.dashboardGrid.addWidget({
+                x: widget.x,
+                y: widget.y,
+                w: widget.w,
+                h: widget.h,
+                content: widgetContent
+            });
+        }
         
-        // Create chart with better options for date filtering
-        const canvas = document.getElementById(widget.id);
-        new Chart(canvas, {
-            type: 'line',
-            data: widget.chartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
+        // Create chart after the widget is added to DOM
+        setTimeout(() => {
+            const canvas = document.getElementById(widget.id);
+            if (canvas) {
+                new Chart(canvas, {
+                    type: 'line',
+                    data: widget.chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    maxTicksLimit: 10,
+                                    maxRotation: 45,
+                                    minRotation: 45
+                                }
+                            },
+                            ...(widget.options?.scales || {})
+                        },
+                        ...(widget.options || {})
                     }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            maxTicksLimit: 10,
-                            maxRotation: 45,
-                            minRotation: 45
-                        }
-                    },
-                    ...(widget.options?.scales || {})
-                },
-                ...(widget.options || {})
+                });
             }
-        });
+        }, 100);
     });
 }
 
@@ -304,9 +305,9 @@ function setupNavigation() {
             const category = this.getAttribute('data-category');
             document.querySelectorAll('.widget').forEach(widget => {
                 if (category === 'all' || widget.getAttribute('data-type') === category) {
-                    widget.style.display = '';
+                    widget.closest('.grid-stack-item').style.display = '';
                 } else {
-                    widget.style.display = 'none';
+                    widget.closest('.grid-stack-item').style.display = 'none';
                 }
             });
         });

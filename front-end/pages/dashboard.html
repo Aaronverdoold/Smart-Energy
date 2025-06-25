@@ -6,6 +6,7 @@
     <title>Smart Energy - Dashboard</title>
     
     <!-- Load CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/gridstack@7.2.3/dist/gridstack.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/themes/dark.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/dashboard.css">
@@ -58,14 +59,18 @@
             </header>
 
             <!-- Dashboard Grid Container - THIS IS THE MAIN CONTAINER FOR WIDGETS -->
-            <div class="dashboard-grid" id="dashboard-grid">
-                <div id="loading-indicator">Loading dashboard data...</div>
+            <div class="grid-container">
+                <div class="grid-stack" id="dashboard-grid">
+                    <!-- Widgets will be added here by GridStack -->
+                    <div id="loading-indicator">Loading dashboard data...</div>
+                </div>
             </div>
         </main>
     </div>
 
     <!-- Load JS libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gridstack@7.2.3/dist/gridstack-all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
     <script src="../assets/js/dashboard/date-picker.js"></script>
     <script src="../assets/js/dashboard/grid-layout.js"></script>
