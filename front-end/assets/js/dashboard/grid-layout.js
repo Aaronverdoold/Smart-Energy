@@ -114,6 +114,48 @@ function loadDashboardData(startDate = null, endDate = null) {
         });
 }
 
+// Toast queue
+let toastQueue = [];
+let toastActive = false;
+
+function showToast(message, type = 'warning') {
+    toastQueue.push({ message, type });
+    if (!toastActive) showNextToast();
+}
+
+function showNextToast() {
+    if (toastQueue.length === 0) {
+        toastActive = false;
+        return;
+    }
+    toastActive = true;
+    const { message, type } = toastQueue.shift();
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+
+    // Set icon and color (same as before)
+    let iconClass = 'ri-error-warning-line';
+    let borderColor = '#FFA500';
+    if (type === 'error') {
+        iconClass = 'ri-close-circle-line';
+        borderColor = '#f44336';
+    } else if (type === 'success') {
+        iconClass = 'ri-checkbox-circle-line';
+        borderColor = '#4caf50';
+    }
+
+    toast.innerHTML = `<i class="${iconClass}"></i><span class="message">${message}</span>`;
+    toast.style.borderLeft = `5px solid ${borderColor}`;
+    toast.classList.add('show');
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hidden');
+        setTimeout(showNextToast, 300); // Small gap between toasts
+    }, 3000);
+}
+
+
 // Create dashboard widgets
 function createWidgets(data) {
     console.log("Creating dashboard widgets");
@@ -309,6 +351,15 @@ function createWidgets(data) {
             }
         }
     ];
+
+    // Temperature toast if inside temp hits exactly 20°C
+    if (data.temperature.inside.includes(20)) {
+        showToast("Inside temperature is exactly 20°C");
+    }
+
+    if (data.solar.power.some(val => val > 40)) {
+        showToast("Warning: Solar panel output is above 40 W!");
+    }
 
     // Add widgets to dashboard
     widgets.forEach(widget => {

@@ -437,6 +437,51 @@ body {
     background: rgba(220, 38, 38, 0.2);
 }
 
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background-color: #ffffff;
+    color: #333;
+    border-left: 5px solid #FFA500; /* Orange border for warning */
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 22px 28px;
+    min-width: 160px;
+    max-width: 480px;
+    font-size: 22px;
+    gap: 16px;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(20px);
+}
+
+.toast.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.toast i {
+    font-size: 28px;
+    color: #FFA500; /* Matching warning color */
+    margin-top: 2px;
+}
+
+.toast .message {
+    flex: 1;
+    color: #333;
+    line-height: 1.4;
+    font-size: 22px;
+}
+
+
+
 /* Add color coding for different widget types */
 .widget[data-type="solar"] { border-left: 4px solid #FFC107; }
 .widget[data-type="hydrogen"] { border-left: 4px solid #4CAF50; }
