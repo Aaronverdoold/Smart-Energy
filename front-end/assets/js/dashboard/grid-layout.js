@@ -42,9 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         console.log(`Refreshing chart data for ${startFormatted} to ${endFormatted}`);
         
-        // Show loading indicator
-        document.getElementById('dashboard-grid').innerHTML = '<div id="loading-indicator">Loading dashboard data...</div>';
-        
         // Reload data with date filter
         loadDashboardData(startFormatted, endFormatted);
     };
@@ -120,12 +117,12 @@ function loadDashboardData(startDate = null, endDate = null) {
 // Create dashboard widgets
 function createWidgets(data) {
     console.log("Creating dashboard widgets");
-    
+
     // Clear the grid first
     if (window.dashboardGrid) {
         window.dashboardGrid.removeAll();
     }
-    
+
     // Define widgets
     const widgets = [
         {
@@ -136,7 +133,7 @@ function createWidgets(data) {
             chartData: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Power (W)',
+                    label: 'Solar Panel Output (W)',
                     data: data.solar.power,
                     borderColor: '#FFC107',
                     backgroundColor: 'rgba(255, 193, 7, 0.1)'
@@ -151,7 +148,7 @@ function createWidgets(data) {
             chartData: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Production (L/h)',
+                    label: 'Hydrogen Production (L/h)',
                     data: data.hydrogen.production,
                     borderColor: '#4CAF50',
                     backgroundColor: 'rgba(76, 175, 80, 0.1)',
@@ -190,7 +187,7 @@ function createWidgets(data) {
             chartData: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Storage (%)',
+                    label: 'Car Hydrogen Level (%)',
                     data: data.car.hydrogen,
                     borderColor: '#9C27B0',
                     backgroundColor: 'rgba(156, 39, 176, 0.1)',
@@ -206,7 +203,7 @@ function createWidgets(data) {
             chartData: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Power (kW)',
+                    label: 'Home Power (kW)',
                     data: data.home.power,
                     borderColor: '#FF9800',
                     backgroundColor: 'rgba(255, 152, 0, 0.1)',
@@ -222,11 +219,92 @@ function createWidgets(data) {
             chartData: {
                 labels: data.labels,
                 datasets: [{
-                    label: 'Storage (%)',
+                    label: 'Home Hydrogen Storage (%)',
                     data: data.home.hydrogen,
                     borderColor: '#009688',
                     backgroundColor: 'rgba(0, 150, 136, 0.1)',
                     fill: true
+                }]
+            }
+        },
+        {
+            id: 'environment-chart',
+            type: 'environment',
+            title: 'Air Quality',
+            x: 0, y: 12, w: 6, h: 4,
+            chartData: {
+                labels: data.labels,
+                datasets: [
+                    {
+                        label: 'CO₂ (ppm)',
+                        data: data.environment.co2,
+                        borderColor: '#795548',
+                        backgroundColor: 'rgba(121, 85, 72, 0.1)',
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Humidity (%)',
+                        data: data.environment.humidity,
+                        borderColor: '#03A9F4',
+                        backgroundColor: 'rgba(3, 169, 244, 0.1)',
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'CO₂ (ppm)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Humidity (%)'
+                        }
+                    }
+                }
+            }
+        },
+        {
+            id: 'battery-chart',
+            type: 'battery',
+            title: 'Battery Level',
+            x: 6, y: 12, w: 3, h: 4,
+            chartData: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Battery Level (%)',
+                    data: data.environment.battery,
+                    borderColor: '#8BC34A',
+                    backgroundColor: 'rgba(139, 195, 74, 0.1)',
+                    fill: true
+                }]
+            }
+        },
+        {
+            id: 'pressure-chart',
+            type: 'pressure',
+            title: 'Atmospheric Pressure',
+            x: 9, y: 12, w: 3, h: 4,
+            chartData: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Atmospheric Pressure (hPa)',
+                    data: data.environment.pressure,
+                    borderColor: '#607D8B',
+                    backgroundColor: 'rgba(96, 125, 139, 0.1)'
                 }]
             }
         }
@@ -242,7 +320,7 @@ function createWidgets(data) {
                 </div>
             </div>
         `;
-        
+
         // Add the widget to GridStack
         if (window.dashboardGrid) {
             console.log(`Adding widget: ${widget.id}`);
@@ -254,7 +332,7 @@ function createWidgets(data) {
                 content: widgetContent
             });
         }
-        
+
         // Create chart after the widget is added to DOM
         setTimeout(() => {
             const canvas = document.getElementById(widget.id);
